@@ -11,7 +11,8 @@ class Blog extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            posts: []
+            posts: [],
+            selectedPostId: null
         }
     }
 
@@ -27,9 +28,14 @@ class Blog extends Component {
                         author: 'Arun Kudiyal'
                     }
                 })
+                console.log(updatedPosts)
                 this.setState( {posts: updatedPosts} )
             })
             .catch( err => console.log(err) )
+    }
+
+    selectPostHandler = (id) => {
+        this.setState({selectedPostId: id})
     }
 
     render () {
@@ -37,11 +43,16 @@ class Blog extends Component {
             <div>
                 <section className="Posts">
                     {
-                        this.state.posts.map( post => <Post key={post.id} title={post.title} author={post.author} /> )
+                        this.state.posts.map( post => <Post 
+                                key={post.id} 
+                                title={post.title} 
+                                author={post.author}
+                                clicked={() => this.selectPostHandler(post.id)} />
+                        )
                     }
                 </section>
                 <section>
-                    <FullPost />
+                    <FullPost id={this.state.selectedPostId} />
                 </section>
                 <section>
                     <NewPost />
